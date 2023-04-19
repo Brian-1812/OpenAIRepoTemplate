@@ -1,11 +1,7 @@
 # `common-types`
 
-> TODO: description
-
 ## Usage
 
 ```
-const commonTypes = require('common-types');
-
-// TODO: DEMONSTRATE API
+import Type from 'common-types'
 ```
