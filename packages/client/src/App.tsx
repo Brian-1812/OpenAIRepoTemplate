@@ -1,6 +1,8 @@
 import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import _ from "lodash";
+import { QueryPayload } from "common-types";
 
 function App() {
   return (
@@ -16,7 +18,7 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          {_.toUpper("Learn React")}
         </a>
 
         {/* NEW */}

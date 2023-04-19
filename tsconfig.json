@@ -1,3 +1,21 @@
 {
-  "compilerOptions": { "baseUrl": "./packages" }
+  "compilerOptions": {
+    "baseUrl": "./packages",
+    "paths": {
+      "common-types/*": ["./common-types/*"]
+      // "components/*": ["./src/components/*"],
+      // "config/*": ["./src/config/*"],
+      // "hooks/*": ["./src/hooks/*"],
+      // "navigation/*": ["./src/navigation/*"],
+      // "screens/*": ["./src/screens/*"],
+      // "store/*": ["./src/store/*"],
+      // "types/*": ["./src/types/*"],
+      // "utils/*": ["./src/utils/*"],
+      // "buttons/*": ["./src/components/buttons/*"],
+      // "styles/*": ["./src/config/styles/*"],
+      // "slices/*": ["./src/store/slices/*"]
+      // "services":["./src/services/*"],
+      // "constants":["./src/constants/*"],
+    }
+  }
 }
