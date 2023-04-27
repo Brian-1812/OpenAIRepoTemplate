@@ -1,0 +1,6 @@
+import { ITokenStructured } from "common-types";
+import { Request } from "express";
+
+export interface IRequest extends Request {
+  token?: ITokenStructured;
+}

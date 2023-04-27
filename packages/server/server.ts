@@ -1,5 +1,5 @@
 import express from "express";
-import sequelize from "./db";
+import { sequelize } from "./db";
 import { useMiddlewares } from "./middlewares/index";
 import http from "http";
 import dotenv from "dotenv";

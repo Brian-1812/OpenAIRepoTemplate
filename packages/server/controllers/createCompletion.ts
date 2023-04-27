@@ -1,14 +1,22 @@
-import { CreateCompletionRequest, CreateCompletionResponse } from "openai";
+import {
+  ChatCompletionRequestMessage,
+  CreateChatCompletionResponse,
+  CreateCompletionRequest,
+  CreateCompletionResponse,
+} from "openai";
 import { openai } from "../middlewares/openai";
 import backoff from "../utils/backoff";
 import { AxiosError, AxiosResponse } from "axios";
 
 export interface ResponseType {
-  data?: AxiosResponse<CreateCompletionResponse, any>;
+  data?: AxiosResponse<
+    CreateCompletionResponse & CreateChatCompletionResponse,
+    any
+  >;
   error?: AxiosError;
 }
 
-const generate = async (
+const generateText = async (
   prompt: string,
   options?: Partial<CreateCompletionRequest>
 ): Promise<ResponseType> => {
@@ -24,6 +32,7 @@ const generate = async (
       stream: options?.stream ?? false,
       stop: options?.stop,
     });
+    // @ts-ignore
     return { data: gptResponse };
   } catch (err) {
     console.log("Error", (err as AxiosError)?.response?.data);
@@ -32,12 +41,41 @@ const generate = async (
   }
 };
 
-const createCompletion = async (
+const generateChat = async (
+  messages: Array<ChatCompletionRequestMessage>,
+  options?: Partial<CreateCompletionRequest>
+): Promise<ResponseType> => {
+  try {
+    const gptResponse = await openai.createChatCompletion({
+      model: options?.model ?? "gpt-3.5-turbo",
+      messages,
+      max_tokens: options?.max_tokens ?? 1000,
+      temperature: options?.temperature ?? 0.5,
+      n: options?.n ?? 1,
+      user: options?.user,
+      stream: options?.stream ?? false,
+    });
+    // @ts-ignore
+    return { data: gptResponse };
+  } catch (err) {
+    console.log("Error", (err as AxiosError)?.response?.data);
+    console.log(err);
+    return { data: undefined, error: err as AxiosError };
+  }
+};
+
+export const createCompletion = async (
   prompt: string,
   options?: Partial<CreateCompletionRequest>
 ) => {
-  const response = await backoff(() => generate(prompt, options), 1);
+  const response = await backoff(() => generateText(prompt, options), 1);
   return response;
 };
 
-module.exports = createCompletion;
+export const createChatCompletion = async (
+  messages: Array<ChatCompletionRequestMessage>,
+  options?: Partial<CreateCompletionRequest>
+) => {
+  const response = await backoff(() => generateChat(messages, options), 1);
+  return response;
+};
